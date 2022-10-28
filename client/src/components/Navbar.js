@@ -16,7 +16,16 @@ const AppNavbar = () => {
         <Container fluid>
           <Navbar.Brand as={Link} to="/">
             Über Books
-          </Navbar.Brand>
+          </Navbar.Brand>{" "}
+          <a
+            href="https://github.com/moweber/uber-books"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub Icon"
+            className="fa fa-github h2 text-decoration-none"
+          >
+            {" "}
+          </a>
           <Navbar.Toggle aria-controls="navbar" />
           <Navbar.Collapse id="navbar">
             <Nav className="ml-auto">
