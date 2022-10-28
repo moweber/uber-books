@@ -1,62 +1,55 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../utils/mutations";
-//import { createUser } from '../utils/API';
 import Auth from "../utils/auth";
 
+// component definition
 const SignupForm = () => {
-  // set initial form state
+  // create states for from data, form validation, error alert
   const [userFormData, setUserFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
-  // set state for API call
-  const [addUser, { error }] = useMutation(ADD_USER);
-  // set state for form validation
   const [validated] = useState(false);
-  // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-
+  // create hook for graphQL api call
+  const [addUser, { error }] = useMutation(ADD_USER);
+  // handles sign up fields' state changes
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
-
+  // handles sign up form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-
+    // wrap graphQL api call for error handling
     try {
-      // const response = await createUser(userFormData);
-
-      // if (!response.ok) {
-      //   throw new Error("something went wrong!");
-      // }
-      // const { token, user } = await response.json();
+      // call graphQL api and get token
       const { data } = await addUser({ variables: { ...userFormData } });
-      // console.log(user);
+      // call login function to save token to local storage
       Auth.login(data.addUser.token);
     } catch (err) {
+      // log error
       console.error(err);
+      // show alert message
       setShowAlert(true);
     }
-
+    // clear form
     setUserFormData({
       username: "",
       email: "",
       password: "",
     });
   };
-
+  // render component JSX
   return (
     <>
       {/* This is needed for the validation functionality above */}
