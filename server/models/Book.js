@@ -9,14 +9,11 @@ const bookSchema = new Schema({
   ],
   description: {
     type: String,
-    required: false,
   },
   // saved book id from GoogleBooks
   bookId: {
     type: String,
     required: true,
-    unique: true,
-    dropDups: true,
   },
   image: {
     type: String,
